@@ -1,0 +1,20 @@
+table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    td {
+      padding: 20px;
+      border: 1px solid #0a0a0a;
+      text-align: left;
+    }
+    img {
+      width: 150px;
+      height: auto;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      color: #000000;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }

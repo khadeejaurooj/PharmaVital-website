@@ -1,0 +1,22 @@
+.container {
+    display: flex; 
+      align-items: center; 
+      margin-bottom: 20px;
+}
+body {
+    font-family: "Poppins", sans-serif;
+    color: #000000;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 20px;
+  }
+
+
+#medicine-price {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#medicine-description {
+    flex: 1;
+}
