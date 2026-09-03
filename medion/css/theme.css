@@ -1,0 +1,1212 @@
+/* =========================================================
+   PharmaVital — theme.css
+   Design system rebuilt to match netapi.io (Demarc product site) —
+   dark surface theme, indigo accent, monospace label accents —
+   adapted to PharmaVital's existing content, pages, and
+   functionality. Loaded last so it overrides the original
+   template's dated defaults (style.css / responsive.css) without
+   touching markup structure beyond what the redesign requires.
+   ========================================================= */
+
+:root {
+  /* ---- palette, taken directly from netapi.io's design tokens ---- */
+  --pv-bg: #080b14;
+  --pv-surface: #10162a;
+  --pv-surface-variant: #1a2140;
+  --pv-outline: #343c5e;
+  --pv-outline-soft: #212747;
+  --pv-text: #e8ecf5;
+  --pv-text-muted: #98a0be;
+  --pv-text-dim: #5b6690;
+
+  --pv-brand: #7c78ff;
+  --pv-brand-deep: #5551f0;
+  --pv-on-brand: #090633;
+  --pv-brand-hover: #8f8bff;
+
+  /* secondary accent for prices/badges so the palette isn't one hue */
+  --pv-amber: #ffb454;
+  --pv-amber-soft: rgba(255, 180, 84, 0.12);
+
+  --pv-radius-lg: 22px;
+  --pv-radius: 16px;
+  --pv-radius-sm: 12px;
+  --pv-shadow-sm: 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+  --pv-shadow: 0 16px 36px -14px rgba(0, 0, 0, 0.6);
+  --pv-shadow-lg: 0 24px 48px -16px rgba(0, 0, 0, 0.65);
+
+  --pv-font-head: "Inter", system-ui, sans-serif;
+  --pv-font-body: "Inter", system-ui, sans-serif;
+  --pv-font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* ---- spacing scale: replaces the template's blanket 100px/60px/55px
+     section padding with a deliberate, breakpoint-aware rhythm ---- */
+  --pv-space-xs: 8px;
+  --pv-space-sm: 16px;
+  --pv-space-md: 24px;
+  --pv-space-lg: 40px;
+  --pv-space-xl: 64px;
+  --pv-space-section: 72px;
+  --pv-space-section-md: 52px;
+  --pv-space-section-sm: 36px;
+}
+
+/* ---------- base ---------- */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--pv-font-body);
+  color: var(--pv-text);
+  background-color: var(--pv-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--pv-font-head);
+  color: var(--pv-text);
+}
+
+.navbar-brand, .nav-link, .btn { font-family: var(--pv-font-head); }
+
+/* bootstrap.css sets a default blue (#007bff) on every <a>; netapi.io
+   resets this to inherit so links blend with surrounding text unless a
+   specific rule below gives them the brand color. */
+a { color: inherit; }
+
+::selection { background-color: var(--pv-brand); color: var(--pv-on-brand); }
+
+a, button, .nav-link { transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+
+/* subtle dot-grid texture behind the whole page, netapi.io's signature
+   background treatment, faded out toward the bottom via a mask */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--pv-outline-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pv-outline-soft) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse 60% 40% at 50% 0%, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 40% at 50% 0%, black 0%, transparent 70%);
+}
+
+/* ---------- global section rhythm ----------
+   The base template applies these classes almost everywhere with a single
+   heavy value (100px / 60px / 55px). Replaced with a shared, shrinking-on-
+   mobile scale so every section — home, sub-pages, all 14 detail pages —
+   follows the same rhythm. */
+.layout_padding { padding: var(--pv-space-section) 0; }
+.layout_padding-top { padding-top: var(--pv-space-section); }
+.layout_padding-bottom { padding-bottom: var(--pv-space-section); }
+.layout_padding2 { padding: var(--pv-space-xl) 0; }
+.layout_padding2-top { padding-top: var(--pv-space-xl); }
+.layout_padding2-bottom { padding-bottom: var(--pv-space-xl); }
+.section-padding { padding: var(--pv-space-xl) 0; }
+
+@media (max-width: 991px) {
+  .layout_padding { padding: var(--pv-space-section-md) 0; }
+  .layout_padding-top { padding-top: var(--pv-space-section-md); }
+  .layout_padding-bottom { padding-bottom: var(--pv-space-section-md); }
+  .layout_padding2, .section-padding { padding: var(--pv-space-lg) 0; }
+}
+
+@media (max-width: 575px) {
+  .layout_padding { padding: var(--pv-space-section-sm) 0; }
+  .layout_padding-top { padding-top: var(--pv-space-section-sm); }
+  .layout_padding-bottom { padding-bottom: var(--pv-space-section-sm); }
+  .layout_padding2, .section-padding { padding: var(--pv-space-md) 0; }
+}
+
+/* ---------- section heading ---------- */
+.custom_heading-container { margin-bottom: var(--pv-space-lg); }
+
+.custom_heading-container h2 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--pv-text);
+}
+
+.custom_heading-container h2::after,
+.contact_section .custom_heading-container h2::after {
+  background-color: var(--pv-brand);
+  height: 3px;
+  border-radius: 999px;
+  width: 48px;
+}
+
+/* small mono uppercase label used above section headings and card titles,
+   netapi.io's "eyebrow" pattern */
+.pv-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--pv-font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--pv-brand);
+  margin-bottom: 10px;
+}
+
+/* =========================================================
+   GLOBAL BUTTONS — netapi.io's pill solid/ghost system
+   ========================================================= */
+.pv-btn, .pv-btn-solid, .pv-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 24px;
+  font-family: var(--pv-font-head);
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.pv-btn, .pv-btn-solid {
+  background-color: var(--pv-brand);
+  border-color: var(--pv-brand);
+  color: var(--pv-on-brand) !important;
+}
+
+.pv-btn:hover, .pv-btn-solid:hover {
+  background-color: var(--pv-brand-hover);
+  border-color: var(--pv-brand-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px -8px rgba(124, 120, 255, 0.55);
+}
+
+.pv-btn-outline {
+  background-color: transparent;
+  border-color: var(--pv-outline);
+  color: var(--pv-text) !important;
+}
+
+.pv-btn-outline:hover { border-color: var(--pv-text-muted); }
+
+/* =========================================================
+   HEADER / NAVBAR
+   ========================================================= */
+/* this container sits inside a centered ".container", so a plain
+   background-color on it only paints that narrower box — leaving the raw
+   hero photo visible at both edges instead of a full-width bar. Broken out
+   to full viewport width via a ::before backdrop, a standard technique for
+   escaping a parent's max-width without restructuring the markup. */
+.header_section .top_contact-container {
+  position: relative;
+  color: var(--pv-text-muted);
+  padding: 10px 0;
+}
+
+.header_section .top_contact-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background-color: var(--pv-surface);
+  border-bottom: 1px solid var(--pv-outline-soft);
+  z-index: -1;
+}
+
+.header_section .top_contact-container .tel_container a {
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: 0.3px;
+  color: var(--pv-text-muted);
+}
+
+.header_section .top_contact-container .social-container a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.06);
+  margin-left: 6px;
+}
+
+.header_section .top_contact-container .social-container a:hover { background-color: var(--pv-brand); }
+
+.header_section .top_contact-container .social-container img {
+  width: 13px !important;
+  height: 13px !important;
+  margin: 0 !important;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+.header_section .container-fluid {
+  background: var(--pv-bg) !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--pv-outline-soft);
+}
+
+.custom_nav-container {
+  padding: 8px 0 !important;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: var(--pv-bg);
+}
+
+.navbar-brand,
+.navbar-brand:hover {
+  color: var(--pv-text) !important;
+  margin-right: 8px;
+}
+
+.navbar-brand img { width: 32px; }
+.navbar-brand span {
+  font-family: var(--pv-font-head);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--pv-text) !important;
+}
+
+.custom_nav-container.navbar-expand-lg .navbar-nav { align-items: center; }
+
+.custom_nav-container.navbar-expand-lg .navbar-nav .nav-link {
+  color: var(--pv-text-muted) !important;
+  font-family: var(--pv-font-head);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  padding: 9px 16px;
+}
+
+.custom_nav-container.navbar-expand-lg .navbar-nav .nav-link:hover,
+.custom_nav-container.navbar-expand-lg .navbar-nav .nav-item.active .nav-link {
+  color: var(--pv-text) !important;
+  background-color: transparent;
+}
+
+.custom_nav-container .navbar-toggler {
+  border: 1px solid var(--pv-outline);
+  border-radius: var(--pv-radius-sm);
+}
+
+/* was inverting the source menu.png, which depended on guessing that
+   file's exact color composition — replaced with an explicit white SVG
+   so the icon color is never in question. */
+.custom_nav-container .navbar-toggler .navbar-toggler-icon {
+  filter: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath stroke='%23e8ecf5' stroke-width='2' stroke-linecap='round' d='M3 6h18M3 12h18M3 18h18'/%3E%3C/svg%3E");
+  background-size: 24px;
+}
+
+.custom_nav-container .form-inline { height: 38px; }
+
+.custom_nav-container .form-inline input {
+  height: 38px !important;
+  border: 1px solid var(--pv-outline) !important;
+  border-radius: var(--pv-radius-sm) 0 0 var(--pv-radius-sm);
+  background-color: var(--pv-surface) !important;
+  color: var(--pv-text);
+  font-size: 13px;
+}
+
+.custom_nav-container .form-inline input::placeholder { color: var(--pv-text-dim); }
+
+/* the original style.css sets this button's icon via
+   background-image: url(../images/search-icon.png) — a dark icon meant for
+   the old light-background template, invisible against this dark redesign.
+   Same fix as the nav toggler: an explicit white SVG instead of guessing
+   at (or inverting) the source image's color. */
+.custom_nav-container .nav_search-btn {
+  height: 38px;
+  width: 38px;
+  background-color: var(--pv-surface) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2398a0be' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid var(--pv-outline);
+  border-left: none;
+  border-radius: 0 var(--pv-radius-sm) var(--pv-radius-sm) 0;
+}
+
+/* the original responsive.css hides the search <input> below 1120px,
+   leaving just this button — which still had border-left:none and
+   one-sided rounding meant to butt up against that now-absent input,
+   so it rendered with a visibly missing left edge. Give it a complete,
+   standalone border/rounding once it's on its own. */
+@media (max-width: 1120px) {
+  .custom_nav-container .nav_search-btn {
+    border-left: 1px solid var(--pv-outline);
+    border-radius: var(--pv-radius-sm);
+  }
+}
+
+/* =========================================================
+   HERO — netapi.io's eyebrow + bold headline + lede + cta-row
+   ========================================================= */
+.hero_area { background-color: var(--pv-bg); }
+
+.hero_area:not(.sub_pages) {
+  position: relative;
+  background-image: url(../images/hero-bg.png);
+  background-size: cover;
+  background-position: center;
+}
+
+.hero_area:not(.sub_pages)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(8, 11, 20, 0.92) 15%, rgba(8, 11, 20, 0.68) 55%, rgba(8, 11, 20, 0.4) 100%);
+  pointer-events: none;
+}
+
+.slider_section { position: relative; z-index: 1; }
+
+.slider_section .detail-box .pv-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--pv-font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--pv-brand);
+  margin-bottom: 22px;
+}
+
+.slider_section .detail-box .pv-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--pv-brand);
+  box-shadow: 0 0 8px var(--pv-brand);
+  animation: pv-pulse 2s ease-in-out infinite;
+}
+
+@keyframes pv-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.slider_section .detail-box h1 {
+  color: var(--pv-text);
+  font-weight: 800;
+  font-size: 2.6rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.slider_section .detail-box h1 span { color: var(--pv-brand); font-size: 2.6rem; font-weight: 800; }
+
+.slider_section .detail-box p {
+  color: var(--pv-text-muted);
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 480px;
+}
+
+.slider_section .detail-box a {
+  display: inline-flex;
+  align-items: center;
+  height: 46px;
+  padding: 0 28px;
+  background-color: var(--pv-brand);
+  border: 1px solid var(--pv-brand);
+  color: var(--pv-on-brand);
+  border-radius: 100px;
+  font-family: var(--pv-font-head);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.slider_section .detail-box a:hover {
+  background-color: var(--pv-brand-hover);
+  border-color: var(--pv-brand-hover);
+  color: var(--pv-on-brand);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px -8px rgba(124, 120, 255, 0.55);
+}
+
+/* Carousel controls: the template placed both prev/next with `left`, so
+   next silently overlapped prev instead of sitting on the right edge.
+   Fixed here as a compact bottom-right pair (not vertically centred)
+   so the buttons never sit on top of the left-aligned caption text. */
+/* the arrow icon is a background-image; filter:invert(1) on the button
+   itself would also invert its own dark background (turning it cream),
+   so the invert is isolated to a pseudo-element that carries only the
+   icon, leaving the surface-colored circle untouched. */
+.slider_section .carousel-control-prev,
+.slider_section .carousel-control-next {
+  top: auto !important;
+  bottom: 26px !important;
+  transform: none !important;
+  width: 42px;
+  height: 42px;
+  background-color: var(--pv-surface) !important;
+  background-image: none !important;
+  border: 1px solid var(--pv-outline);
+  position: absolute;
+}
+
+.slider_section .carousel-control-prev::after,
+.slider_section .carousel-control-next::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40%;
+  filter: invert(1);
+}
+
+.slider_section .carousel-control-prev {
+  left: auto !important;
+  right: 88px !important;
+}
+
+.slider_section .carousel-control-prev::after { background-image: url(../images/left-arrow.png); }
+
+.slider_section .carousel-control-next {
+  right: 32px !important;
+  left: auto !important;
+}
+
+.slider_section .carousel-control-next::after { background-image: url(../images/right-arrow.png); }
+
+.slider_section .carousel-control-prev:hover,
+.slider_section .carousel-control-next:hover { background-color: var(--pv-surface-variant) !important; }
+
+.slider_section .carousel-indicators li { background-color: var(--pv-outline) !important; }
+.slider_section .carousel-indicators li.active { background-color: var(--pv-brand) !important; }
+
+/* =========================================================
+   EMPLOYEE CARDS — dark bordered surface card (netapi.io's
+   "pillar" pattern) with the button pinned to the bottom so
+   every card in a row lines up regardless of how much role
+   text wraps.
+   ========================================================= */
+#Employees.section-padding { background-color: var(--pv-bg); position: relative; z-index: 1; }
+
+#Employees .ser-title {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 1.9rem;
+  letter-spacing: 0.4px;
+  color: var(--pv-text);
+  margin-bottom: 14px;
+}
+
+#Employees .botm-line {
+  width: 48px;
+  height: 3px;
+  background-color: var(--pv-brand);
+  border: none;
+  border-radius: 999px;
+  margin: 0 auto var(--pv-space-lg);
+}
+
+.thumbnail {
+  background-color: var(--pv-surface);
+  border: 1px solid var(--pv-outline) !important;
+  border-radius: var(--pv-radius) !important;
+  overflow: hidden;
+  padding: 22px 22px 26px;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.thumbnail:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--pv-shadow);
+  border-color: var(--pv-brand) !important;
+}
+
+.thumbnail .img1 {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: var(--pv-radius-sm);
+  transition: transform 0.4s ease;
+}
+
+.thumbnail:hover .img1 { transform: scale(1.05); }
+
+.thumbnail .caption { display: flex; flex-direction: column; flex: 1; }
+
+.thumbnail .caption h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 16px;
+  margin-bottom: 2px;
+  color: var(--pv-text);
+}
+
+.thumbnail .caption p {
+  color: var(--pv-brand);
+  font-weight: 500;
+  font-family: var(--pv-font-mono);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.thumbnail .caption ul.list-inline { margin: 12px 0; }
+
+.thumbnail .caption ul.list-inline a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--pv-surface-variant);
+  color: var(--pv-text-muted);
+}
+
+.thumbnail .caption ul.list-inline a:hover { background-color: var(--pv-brand); color: var(--pv-on-brand); }
+
+/* Role text wraps to 1-3 lines depending on the employee, which used to
+   push the "Read More" button to a different height on every card. */
+.thumbnail .caption > div:last-child { margin-top: auto; padding-top: 8px; }
+
+.thumbnail .caption > div > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+  border-radius: 100px;
+  background-color: var(--pv-brand);
+  color: var(--pv-on-brand);
+  font-family: var(--pv-font-head);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.thumbnail .caption > div > a:hover { background-color: var(--pv-brand-hover); transform: translateY(-1px); }
+
+/* =========================================================
+   DISCOUNT BANNER
+   ========================================================= */
+.discount_section {
+  background: var(--pv-surface);
+  border-top: 1px solid var(--pv-outline-soft);
+  border-bottom: 1px solid var(--pv-outline-soft);
+  padding: var(--pv-space-section) 0;
+  position: relative;
+  z-index: 1;
+}
+
+.discount_section .detail-box h2 { font-weight: 800; color: var(--pv-text); }
+.discount_section .detail-box h2 span { color: var(--pv-brand); }
+.discount_section .detail-box p { color: var(--pv-text-muted); }
+
+/* the original style.css strips this column's own gutter padding
+   (".discount_section .row .col-lg-7 { padding: 0 }"), which — combined
+   with the old container-fluid — ran the image edge-to-edge with no
+   breathing room and clipped its rounded corners off-screen. Restored
+   proper spacing now that the section uses a normal contained .container. */
+.discount_section .row .col-lg-7 { padding: 0 15px; }
+
+@media (max-width: 991px) {
+  .discount_section .row .col-lg-7 { margin-top: var(--pv-space-lg); }
+}
+
+.discount_section .detail-box a {
+  background-color: var(--pv-brand);
+  border-color: var(--pv-brand);
+  border-radius: 100px;
+  font-weight: 700;
+  color: var(--pv-on-brand) !important;
+}
+
+.discount_section .detail-box a:hover { background-color: var(--pv-brand-hover); border-color: var(--pv-brand-hover); color: var(--pv-on-brand) !important; }
+
+.discount_section .img-box img { border-radius: var(--pv-radius-lg); }
+
+/* =========================================================
+   MEDICINE CARDS — one card per carousel slide (fewer, wider
+   cards), flexbox so prices never get clipped.
+   ========================================================= */
+.health_section { background-color: var(--pv-bg); position: relative; z-index: 1; }
+
+.health_section .health_carousel-container { width: 92%; max-width: 1140px; }
+
+.health_section h2.text-uppercase { text-align: center; font-weight: 800; color: var(--pv-text); margin-bottom: 6px; }
+
+.health_section h2.text-uppercase::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  background-color: var(--pv-brand);
+  margin: 12px auto 0;
+  border-radius: 999px;
+}
+
+.health_section .carousel-wrap.layout_padding2 { padding-top: 26px; padding-bottom: 30px; }
+
+.health_section .owl-carousel .item { height: 100%; }
+
+.health_section .box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  border: 1px solid var(--pv-outline);
+  border-radius: var(--pv-radius);
+  overflow: hidden;
+  background-color: var(--pv-surface);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  font-family: var(--pv-font-body);
+}
+
+.health_section .box:hover { transform: translateY(-6px); box-shadow: var(--pv-shadow); border-color: var(--pv-brand); }
+
+.health_section .box .img-box {
+  height: 240px;
+  background-color: var(--pv-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.health_section .box .img-box img {
+  max-width: 78%;
+  max-height: 80%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+  border-radius: var(--pv-radius-sm);
+}
+
+.health_section .box:hover .img-box img { transform: scale(1.06); }
+
+.health_section .box .detail-box { flex: 1; display: flex; flex-direction: column; padding: 22px 22px 24px; }
+
+.health_section .box .detail-box .text {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.health_section .box .detail-box .text h6 {
+  font-weight: 600;
+  color: var(--pv-text);
+  font-size: 15.5px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.health_section .box .detail-box .text h6.price {
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: var(--pv-amber);
+  background-color: var(--pv-amber-soft);
+  font-weight: 700;
+  font-size: 14.5px;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.health_section .box .detail-box .text h6.price span { font-weight: 500; font-size: 11.5px; opacity: 0.75; }
+
+.health_section .box .pv-card-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  height: 42px;
+  width: 100%;
+  border-radius: 100px;
+  background-color: var(--pv-brand);
+  color: var(--pv-on-brand) !important;
+  font-family: var(--pv-font-head);
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.2px;
+}
+
+.health_section .box .pv-card-link:hover { background-color: var(--pv-brand-hover); }
+
+.health_section .box .btn_container { display: none; }
+
+.health_section .owl-nav.disabled { display: block; }
+
+.health_section .owl-carousel .owl-nav.disabled > div {
+  position: absolute;
+  top: -58px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--pv-surface);
+  background-image: none;
+  border: 1px solid var(--pv-outline);
+}
+
+.health_section .owl-carousel .owl-nav.disabled > div::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: invert(1);
+}
+
+.health_section .owl-carousel .owl-nav.disabled > div:hover { background-color: var(--pv-surface-variant); }
+
+.health_section .owl-carousel .owl-nav.disabled .owl-prev { right: 58px; }
+.health_section .owl-carousel .owl-nav.disabled .owl-next { right: 4px; }
+.health_section .owl-carousel .owl-nav.disabled .owl-prev::after { background-image: url(../images/prev.png); }
+.health_section .owl-carousel .owl-nav.disabled .owl-next::after { background-image: url(../images/next.png); }
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+/* This is the first thing visible on the page below the sticky nav, with
+   no hero image behind it to fill the space — the standard 72px section
+   padding plus the heading's own 40px margin read as a lot of bare dark
+   space before any real content. Tightened just for this page. */
+.about_section { background-color: var(--pv-bg); position: relative; z-index: 1; padding-top: var(--pv-space-md); }
+.about_section .custom_heading-container { margin-bottom: var(--pv-space-sm); }
+
+@media (max-width: 991px) { .about_section { padding-top: var(--pv-space-sm); } }
+
+.pv-about-history, .pv-values-grid, .pv-mission-card { width: 100%; }
+
+.pv-about-history { display: flex; align-items: center; gap: var(--pv-space-xl); margin-bottom: var(--pv-space-xl); }
+/* the original style.css rule (".about_section .container .img-box",
+   3 classes) is more specific than a plain ".pv-about-history .img-box"
+   (2 classes) and was still winning here on the flex-row layout — mostly
+   invisible there since align-items:center absorbs it, but on index.html's
+   separate, unwrapped about-preview section (below) that same 45px
+   margin-top shows up as a very literal, visible gap before the image. */
+.about_section .container .img-box { margin: 0; }
+.pv-about-history .img-box { flex: 0 0 42%; margin: 0; }
+.pv-about-history .img-box img { border-radius: var(--pv-radius-lg); box-shadow: var(--pv-shadow); width: 100%; border: 1px solid var(--pv-outline); }
+.pv-about-history .detail-box { flex: 1; }
+.pv-about-history .detail-box p { text-align: left; margin: 0; color: var(--pv-text-muted); line-height: 1.8; }
+
+@media (max-width: 991px) {
+  .pv-about-history { flex-direction: column; gap: var(--pv-space-lg); }
+  .pv-about-history .img-box { flex-basis: auto; max-width: 420px; }
+}
+
+.pv-values-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--pv-space-md); margin-bottom: var(--pv-space-xl); }
+
+.pv-value-card {
+  background-color: var(--pv-surface);
+  border: 1px solid var(--pv-outline);
+  border-radius: var(--pv-radius);
+  padding: 26px;
+  text-align: left;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pv-value-card:hover { transform: translateY(-5px); box-shadow: var(--pv-shadow); border-color: var(--pv-brand); }
+
+.pv-value-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--pv-radius-sm);
+  background-color: var(--pv-surface-variant);
+  color: var(--pv-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  margin-bottom: 14px;
+}
+
+.pv-value-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--pv-text); }
+.pv-value-card p { color: var(--pv-text-muted); font-size: 14px; line-height: 1.6; margin: 0; }
+
+@media (max-width: 767px) { .pv-values-grid { grid-template-columns: 1fr; } }
+
+.pv-mission-card {
+  position: relative;
+  background: var(--pv-surface);
+  border: 1px solid var(--pv-outline);
+  border-radius: var(--pv-radius-lg);
+  padding: 44px 48px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.pv-mission-card .fa-quote-left { font-size: 28px; color: var(--pv-brand); opacity: 0.6; margin-bottom: 8px; }
+.pv-mission-card .pv-eyebrow-light { color: var(--pv-brand); display: block; }
+
+.pv-mission-card p {
+  color: var(--pv-text);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 720px;
+  margin: 10px auto 0;
+}
+
+.about_section .container .detail-box a {
+  border-radius: 100px;
+  background-color: var(--pv-brand);
+  border-color: var(--pv-brand);
+  color: var(--pv-on-brand) !important;
+  font-weight: 700;
+}
+
+.about_section .container .detail-box a:hover { background-color: var(--pv-brand-hover); border-color: var(--pv-brand-hover); color: var(--pv-on-brand) !important; }
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+.contact_section { background-color: var(--pv-bg); position: relative; z-index: 1; }
+
+.contact_section .form_contaier {
+  background-color: var(--pv-surface);
+  border: 1px solid var(--pv-outline);
+  border-radius: var(--pv-radius-lg);
+  padding: 36px;
+  height: 100%;
+}
+
+.pv-form-row { display: flex; gap: 18px; }
+.pv-form-row .form-group { flex: 1; min-width: 0; }
+
+.contact_section .form_contaier form label {
+  font-family: var(--pv-font-mono);
+  font-weight: 500;
+  font-size: 11.5px;
+  color: var(--pv-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.contact_section .form_contaier form .form-control {
+  border: 1px solid var(--pv-outline) !important;
+  border-radius: var(--pv-radius-sm) !important;
+  height: 46px !important;
+  padding: 0 14px;
+  background-color: var(--pv-surface-variant) !important;
+  color: var(--pv-text);
+  font-size: 14px;
+}
+
+.contact_section .form_contaier form select.form-control {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2398a0be' stroke-width='1.6' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  padding-right: 36px;
+}
+
+.contact_section .form_contaier form .form-control:focus {
+  border-color: var(--pv-brand) !important;
+  box-shadow: 0 0 0 3px rgba(124, 120, 255, 0.2) !important;
+  background-color: var(--pv-surface-variant) !important;
+}
+
+.contact_section .form_contaier form .form-control#exampleInputMessage { height: 110px !important; padding-top: 12px; }
+.contact_section .form_contaier form .form-group { margin-bottom: 18px; }
+
+.contact_section .form_contaier form button {
+  display: block;
+  width: 100%;
+  height: 48px;
+  margin-top: 6px;
+  background-color: var(--pv-brand) !important;
+  border-color: var(--pv-brand) !important;
+  border-radius: 100px !important;
+  color: var(--pv-on-brand) !important;
+  font-family: var(--pv-font-head);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.contact_section .form_contaier form button:hover {
+  background-color: var(--pv-brand-hover) !important;
+  color: var(--pv-on-brand) !important;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 575px) { .pv-form-row { flex-direction: column; gap: 0; } }
+
+.contact_section .detail-box {
+  border-radius: var(--pv-radius-lg);
+  background-image: linear-gradient(120deg, rgba(8, 11, 20, 0.92), rgba(16, 22, 42, 0.85)), url(../images/contact-bg.jpg);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--pv-outline);
+  height: 100%;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.contact_section .detail-box h1 { color: var(--pv-text); font-size: 1.9rem; font-weight: 800; line-height: 1.35; margin: 0; }
+
+@media (max-width: 991px) {
+  .contact_section .detail-box { min-height: 220px; margin-top: var(--pv-space-lg); }
+}
+
+#popup {
+  background-color: var(--pv-surface) !important;
+  border-radius: var(--pv-radius);
+  box-shadow: var(--pv-shadow);
+  border: 1px solid var(--pv-outline) !important;
+  text-align: center;
+  z-index: 10000;
+}
+
+#popup h2 { color: var(--pv-brand); }
+#popup p { color: var(--pv-text-muted); }
+
+#popup button {
+  margin-top: 10px;
+  padding: 8px 26px;
+  background-color: var(--pv-brand);
+  color: var(--pv-on-brand);
+  border: none;
+  border-radius: 100px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   FOOTER — netapi.io's mono-label link columns + bottom bar
+   ========================================================= */
+.footer_section { background-color: var(--pv-bg); color: var(--pv-text-muted); font-size: 14px; position: relative; z-index: 1; }
+
+.footer_section .footer-top { padding: var(--pv-space-xl) 0 var(--pv-space-lg); border-top: 1px solid var(--pv-outline-soft); }
+
+/* the original style.css has an unscoped ".footer_section p" rule (written
+   for the old single centered copyright line) that was adding a border,
+   forced 65% width and centering to every <p> in the new footer-top —
+   reset it before the specific rules below add their own spacing. */
+.footer_section .footer-top p { border-top: none; width: auto; max-width: none; padding: 0; text-align: left; margin: 0; }
+
+.footer_section .footer-about .logo { display: flex; align-items: center; gap: 8px; line-height: 1; margin-bottom: 18px; }
+.footer_section .footer-about .logo img { max-height: 32px; }
+.footer_section .footer-about .logo span { color: var(--pv-text); font-family: var(--pv-font-head); font-size: 22px; font-weight: 800; }
+.footer_section .footer-about > p { max-width: 320px; margin-bottom: 18px !important; }
+
+.footer_section .footer-contact p { margin-bottom: 8px !important; display: flex; align-items: center; gap: 8px; }
+
+.footer_section .footer-contact p i {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--pv-surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--pv-brand);
+}
+
+.footer_section h4 {
+  color: var(--pv-text-dim);
+  font-family: var(--pv-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+/* the original style.css has an unscoped "ul li { display: inline-block }"
+   rule (written for the employee card's icon list) that was silently
+   breaking this into a wrapped inline row instead of a vertical list */
+.footer_section .footer-links ul { list-style: none; padding: 0; margin: 0; }
+.footer_section .footer-links ul li { display: block; padding: 6px 0; margin-right: 0; }
+.footer_section .footer-links a { color: var(--pv-text-muted); font-size: 14.5px; }
+.footer_section .footer-links a:hover { color: var(--pv-text); }
+
+.footer_section .social-links { display: flex; gap: 8px; margin-top: 18px; }
+
+.footer_section .social-links a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--pv-surface);
+  border: 1px solid var(--pv-outline-soft);
+  color: var(--pv-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer_section .social-links a:hover { background-color: var(--pv-brand); border-color: var(--pv-brand); color: var(--pv-on-brand); }
+
+.footer_section .copyright {
+  padding: 20px 0;
+  border-top: 1px solid var(--pv-outline-soft);
+  font-family: var(--pv-font-mono);
+  font-size: 12px;
+  color: var(--pv-text-dim);
+}
+
+.footer_section .copyright .credits { margin-top: 4px; opacity: 0.8; }
+.footer_section .copyright .credits a { color: var(--pv-text-muted); }
+
+@media (max-width: 575px) {
+  .footer_section .footer-about, .footer_section .footer-links { text-align: center; }
+  .footer_section .footer-about .logo, .footer_section .social-links { justify-content: center; }
+  .footer_section .footer-contact p { justify-content: center; }
+}
+
+/* =========================================================
+   SHARED BUTTONS + DETAIL PAGES (medicine/employee/vendor)
+   ========================================================= */
+.pv-detail_hero {
+  background-color: var(--pv-bg);
+  padding: 36px 0 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--pv-outline-soft);
+}
+
+.pv-breadcrumb { font-size: 13px; color: var(--pv-text-dim); margin-bottom: 6px; }
+.pv-breadcrumb a { color: var(--pv-brand); }
+
+.pv-detail_hero h1 { font-weight: 800; color: var(--pv-text); margin: 0; }
+
+.pv-detail_section { padding: 50px 0 80px; background-color: var(--pv-bg); }
+
+.pv-detail_card {
+  background-color: var(--pv-surface);
+  border: 1px solid var(--pv-outline);
+  border-radius: var(--pv-radius);
+  padding: 34px;
+}
+
+.pv-detail_image {
+  width: 100%;
+  height: 320px;
+  border-radius: var(--pv-radius);
+  background-color: var(--pv-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.pv-detail_image img { max-width: 70%; max-height: 85%; object-fit: contain; border-radius: var(--pv-radius-sm); }
+
+.pv-detail_price {
+  display: inline-block;
+  font-family: var(--pv-font-head);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--pv-amber);
+  background-color: var(--pv-amber-soft);
+  padding: 8px 22px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.pv-detail_card p, .pv-detail_card li { color: var(--pv-text-muted); line-height: 1.8; }
+.pv-detail_card b { color: var(--pv-text); }
+
+.pv-employee_photo {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: var(--pv-radius);
+  border: 1px solid var(--pv-outline);
+  margin-bottom: 24px;
+}
+
+.pv-employee_role {
+  display: inline-block;
+  color: var(--pv-brand);
+  font-family: var(--pv-font-mono);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  background-color: var(--pv-surface-variant);
+  padding: 6px 18px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.pv-vendor_grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
+
+.pv-vendor_card {
+  display: flex;
+  gap: 20px;
+  background-color: var(--pv-surface);
+  border: 1px solid var(--pv-outline);
+  border-radius: var(--pv-radius);
+  padding: 20px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pv-vendor_card:hover { transform: translateY(-5px); box-shadow: var(--pv-shadow); border-color: var(--pv-brand); }
+
+.pv-vendor_card img { width: 96px; height: 96px; object-fit: cover; border-radius: var(--pv-radius-sm); flex-shrink: 0; transition: transform 0.4s ease; }
+.pv-vendor_card:hover img { transform: scale(1.06); }
+
+.pv-vendor_card h2 { font-size: 19px; font-weight: 700; margin-bottom: 6px; color: var(--pv-text); }
+.pv-vendor_card p { color: var(--pv-text-muted); font-size: 14px; line-height: 1.7; margin: 0; }
+
+.pv-copy b { color: var(--pv-text); }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 991px) {
+  .custom_nav-container .navbar-collapse {
+    background-color: var(--pv-surface);
+    border: 1px solid var(--pv-outline-soft);
+    border-radius: var(--pv-radius);
+    margin-top: 12px;
+    padding: 16px;
+  }
+
+  .custom_nav-container.navbar-expand-lg .navbar-nav .nav-link { text-align: center; }
+  .pv-vendor_grid { grid-template-columns: 1fr; }
+  .slider_section .detail-box h1,
+  .slider_section .detail-box h1 span { font-size: 1.9rem; }
+}
+
+@media (max-width: 767px) {
+  .pv-detail_card { padding: 22px; }
+  .pv-vendor_card { flex-direction: column; }
+  .pv-vendor_card img { width: 100%; height: 180px; }
+  .health_section .box { min-height: auto; }
+  .health_section .box .img-box { height: 200px; }
+  .slider_section .carousel-control-prev,
+  .slider_section .carousel-control-next { display: none; }
+}
+
+@media (max-width: 575px) {
+  .thumbnail { margin-bottom: 20px; }
+}
